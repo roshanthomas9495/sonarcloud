@@ -1,6 +1,10 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
  args: ['build', '-f', './sonarqube/Dockerfile' ,'--tag=asia-south1-docker.pkg.dev/jmc-devsecops/hello-test/sonar-scanner:${_SONARQUBE_SCANNER_CLI_VERSION}', '--tag=asia-south1-docker.pkg.dev/jmc-devsecops/hello-test/sonar-scanner:latest', './sonarqube']
+
+images: 
+- 'asia-south1-docker.pkg.dev/jmc-devsecops/hello-test/sonar-scanner:latest'
+- 'asia-south1-docker.pkg.dev/jmc-devsecops/hello-test/sonar-scanner:${_SONARQUBE_SCANNER_CLI_VERSION}'
 #   args:
 #   - '-v'  # Verbose output
 #   - '-o'  # Set SonarCloud organization
