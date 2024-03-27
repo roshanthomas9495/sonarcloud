@@ -1,20 +1,26 @@
-name: Build
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    types: [opened, synchronize, reopened]
-jobs:
-  sonarcloud:
-    name: SonarCloud
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.c52afc57d40e5e899b65a71a89e649467851fefa }}
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/jmc-devsecops /sonarcloud-scanner:latest', '.']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/jmc-devsecops /sonarcloud-scanner:latest']
+- name: 'sonarsource/sonarcloud-scan:latest'
+  args:
+  - '-v'  # Verbose output
+  - '-o'  # Set SonarCloud organization
+    value: sonarcloud
+  # Replace with your organization
+  - '-p'  # Set SonarCloud project
+    value: SONAR_TOKEN  # Replace with your project name
+  - '-t'  # Set SonarCloud token (use Secret Manager)
+    env:   $SONAR_TOKEN
+  - '-b'  # Set project base directory
+    path: 'your/project/base/directory'  # Replace with your path
+
+substitutions:
+  _PROJECT_ID: jmc-devsecops
+
+secrets:
+  - secretEnv: SONAR_TOKEN
+    projectId: jmc-devsecops
+    secretName: sonarcloud-token  # Replace with your secret name
+
