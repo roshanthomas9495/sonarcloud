@@ -4,23 +4,23 @@ steps:
 - name: 'gcr.io/cloud-builders/docker'
   args: ['push', 'gcr.io/jmc-devsecops /sonarcloud-scanner:latest']
 - name: 'sonarsource/sonarcloud-scan:latest'
-  args:
-  - '-v'  # Verbose output
-  - '-o'  # Set SonarCloud organization
-    value: sonarcloud
-  # Replace with your organization
-  - '-p'  # Set SonarCloud project
-    value: SONAR_TOKEN  # Replace with your project name
-  - '-t'  # Set SonarCloud token (use Secret Manager)
-    env:   $SONAR_TOKEN
-  - '-b'  # Set project base directory
-    path: 'your/project/base/directory'  # Replace with your path
+#   args:
+#   - '-v'  # Verbose output
+#   - '-o'  # Set SonarCloud organization
+#     value: sonarcloud
+#    Replace with your organization
+#   - '-p'  # Set SonarCloud project
+#     value: SONAR_TOKEN  # Replace with your project name
+#   - '-t'  # Set SonarCloud token (use Secret Manager)
+#     env:   $SONAR_TOKEN
+#   - '-b'  # Set project base directory
+#     path: 'your/project/base/directory'  # Replace with your path
 
-substitutions:
-  _PROJECT_ID: jmc-devsecops
+# substitutions:
+#   _PROJECT_ID: jmc-devsecops
 
-secrets:
-  - secretEnv: SONAR_TOKEN
-    projectId: jmc-devsecops
-    secretName: sonarcloud-token  # Replace with your secret name
+# secrets:
+#   - secretEnv: SONAR_TOKEN
+#     projectId: jmc-devsecops
+#     secretName: sonarcloud-token  # Replace with your secret name
 
