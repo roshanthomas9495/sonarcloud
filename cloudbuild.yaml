@@ -1,9 +1,7 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/jmc-devsecops /sonarcloud-scanner:latest', '.']
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'gcr.io/jmc-devsecops /sonarcloud-scanner:latest']
-- name: 'sonarsource/sonarcloud-scan:latest'
+  args: ['build', '-f', './sonarqube/Dockerfile' ,'--tag=asia-south1-docker.pkg.dev/jmc-devsecops/hello-test/sonar-scanner:${_SONARQUBE_SCANNER_CLI_VERSION}', '--tag=asia-south1-docker.pkg.dev/jmc-devsecops/hello-test/sonar-scanner:latest', './sonarqube']
+
 #   args:
 #   - '-v'  # Verbose output
 #   - '-o'  # Set SonarCloud organization
@@ -24,3 +22,6 @@ steps:
 #     projectId: jmc-devsecops
 #     secretName: sonarcloud-token  # Replace with your secret name
 
+tags: ['sonarcloud']
+substitutions:
+  _SONARQUBE_SCANNER_CLI_VERSION: 5.0.1
